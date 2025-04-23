@@ -43,39 +43,39 @@ console.log('track =', track);
   })();
 
   function initCarousel() {
-    const track = document.querySelector('.carousel__track');
-    const slides = document.querySelectorAll('.slide');
+    const track   = document.querySelector('.carousel__track');
+    const slides  = document.querySelectorAll('.slide');
     const prevBtn = document.querySelector('.prev');
     const nextBtn = document.querySelector('.next');
   
+    // debug rapide :
+    console.log({ track, slides, prevBtn, nextBtn });
+    if (!track || slides.length === 0 || !prevBtn || !nextBtn) return;
+  
     let currentIndex = 0;
   
-    function showSlide(index) {
-      const offset = -index * 100;
-      track.style.transform = `translateX(${offset}%)`;
+    function showSlide(i) {
+      track.style.transform = `translateX(-${i * 100}%)`;
     }
   
-    function nextSlide() {
-      currentIndex = (currentIndex + 1) % slides.length;
-      showSlide(currentIndex);
-    }
-  
-    function prevSlide() {
+    prevBtn.addEventListener('click', () => {
       currentIndex = (currentIndex - 1 + slides.length) % slides.length;
       showSlide(currentIndex);
-    }
+    });
   
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      showSlide(currentIndex);
+    });
   
-    // Optionnel : défilement automatique toutes les 5 secondes
-    setInterval(nextSlide, 5000);
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      showSlide(currentIndex);
+    }, 5000);
   
-    showSlide(currentIndex); // Initialiser à la slide 0
+    showSlide(currentIndex);
   }
   
-  // Exécuter après chargement du DOM
-  document.addEventListener('DOMContentLoaded', function () {
-    initCarousel();
-  });
+  document.addEventListener('DOMContentLoaded', initCarousel);
+  
    
