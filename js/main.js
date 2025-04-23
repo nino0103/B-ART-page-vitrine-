@@ -1,16 +1,12 @@
-document.addEventListener('DOMContentLoaded', function () {
+  (function() {
     const menuButton = document.querySelector('.menu-toggle');
-    const mainNav = document.querySelector('.nav');
-  
-    menuButton.addEventListener('click', function () {
-      mainNav.classList.toggle('active');
-  
-      // Animation de l'icône : ☰ → ✖
-      if (menuButton.textContent === '☰') {
-        menuButton.textContent = '✖';
-      } else {
-        menuButton.textContent = '☰';
-      }
+    const mainNav    = document.querySelector('.nav');
+    if (!menuButton || !mainNav) return; // on sort si les éléments n'existent pas
+
+    menuButton.addEventListener('click', function() {
+      const isOpen = mainNav.classList.toggle('active');
+
+      // bascule l’icône en fonction de l’état du menu
+      menuButton.textContent = isOpen ? '✖' : '☰';
     });
-  });
-   
+  })();
