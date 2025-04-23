@@ -42,40 +42,49 @@ console.log('track =', track);
     });
   })();
 
+  (function () {
+    const menuButton = document.querySelector('.menu-toggle');
+    const mainNav = document.querySelector('.nav');
+    if (!menuButton || !mainNav) return;
+  
+    menuButton.addEventListener('click', function () {
+      const isOpen = mainNav.classList.toggle('active');
+      menuButton.textContent = isOpen ? '✖' : '☰';
+    });
+  })();
+  
   function initCarousel() {
-    const track   = document.querySelector('.carousel__track');
-    const slides  = document.querySelectorAll('.slide');
+    const track = document.querySelector('.carousel__track');
+    const slides = document.querySelectorAll('.slide');
     const prevBtn = document.querySelector('.prev');
     const nextBtn = document.querySelector('.next');
   
-    // debug rapide :
-    console.log({ track, slides, prevBtn, nextBtn });
-    if (!track || slides.length === 0 || !prevBtn || !nextBtn) return;
-  
     let currentIndex = 0;
   
-    function showSlide(i) {
-      track.style.transform = `translateX(-${i * 100}%)`;
+    function showSlide(index) {
+      const offset = -index * 100;
+      track.style.transform = `translateX(${offset}%)`;
     }
   
-    prevBtn.addEventListener('click', () => {
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % slides.length;
+      showSlide(currentIndex);
+    }
+  
+    function prevSlide() {
       currentIndex = (currentIndex - 1 + slides.length) % slides.length;
       showSlide(currentIndex);
-    });
+    }
   
-    nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % slides.length;
-      showSlide(currentIndex);
-    });
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
   
-    setInterval(() => {
-      currentIndex = (currentIndex + 1) % slides.length;
-      showSlide(currentIndex);
-    }, 5000);
-  
+    setInterval(nextSlide, 5000);
     showSlide(currentIndex);
   }
   
-  document.addEventListener('DOMContentLoaded', initCarousel);
-  
+  document.addEventListener('DOMContentLoaded', function () {
+    initCarousel();
+  });
+   
    
